@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .input-icon {
+      color: #5dade2;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+  <div class="w-full max-w-md">
+    
+    <!-- SIGN UP SECTION -->
+    <div class="glass-card rounded-3xl p-8 lg:p-12">
+      
+      <h2 class="text-4xl font-light text-white text-center mb-8 tracking-wide">SIGN UP</h2>
+
+      <form method="post" action="/create">
+        
+        <!-- Full Name -->
+        <div class="mb-5">
+          <div class="flex items-center bg-white rounded-lg shadow-md">
+            <div class="px-4 input-icon">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              name="name"
+              placeholder="Full Name"
+              required
+              class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-gray-700 placeholder-gray-400"
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-5">
+          <div class="flex items-center bg-white rounded-lg shadow-md">
+            <div class="px-4 input-icon">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+              </svg>
+            </div>
+            <input 
+              type="email" 
+              name="email"
+              placeholder="E-mail"
+              required
+              class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-gray-700 placeholder-gray-400"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-8">
+          <div class="flex items-center bg-white rounded-lg shadow-md">
+            <div class="px-4 input-icon">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <input 
+              type="password" 
+              name="password"
+              placeholder="Password"
+              required
+              class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-gray-700 placeholder-gray-400"
+            />
+          </div>
+        </div>
+
+        <!-- Create Account Button -->
+        <button 
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full shadow-lg transition duration-200 mb-4"
+        >
+          CREATE ACCOUNT
+        </button>
+
+        <!-- Login Link -->
+        <div class="text-center">
+          <a href="/login" class="text-white text-sm hover:underline">Already have an account? Login here</a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>
