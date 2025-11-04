@@ -19,13 +19,15 @@ app.use(cookieParser());
 // Home page
 app.get("/", (req, res) => res.render("index"));
 
-//  CREATE USER (no try/catch)
+//  CREATE USER ()
 app.post("/create", async (req, res) => {
   let { name, email, password } = req.body;
 
   // Check if user already exists
-  let existingUser = await prisma.user.findUnique({ where: { email } });
-  if (existingUser) return res.send("Email already exists");
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return res.status(409).json({ error: "Email already exists" });
+    }("Email already exists");
 
   // Hash password
   let salt = await bcrypt.genSalt(10);
@@ -52,20 +54,45 @@ app.get("/login", (req, res) => res.render("login"));
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  try {
+    // 1. Fetch the user from the database
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true, 
+      },
+    });
 
-  if (!user) return res.send("Invalid email or password");
+    if (!user) {
+      // Return a generic error to prevent enumeration of valid emails
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
 
-  const isMatch = await bcrypt.compare(password, user.password);
+    //  Compare the provided password with the hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
 
-  if (!isMatch) return res.send("Invalid email or password");
+    if (!isMatch) {
 
-  const token = jwt.sign({ email: user.email }, "password", { expiresIn: "1h" });
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
 
-  res.cookie("token", token, { httpOnly: true });
+    // Create token and set cookie
+    
+    let token = jwt.sign({ email: user.email }, "password", { expiresIn: "1h" });
 
-  res.send(`Welcome back, ${user.name}`);
+    res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+
+    res.json({ message: "Login successful", user: { id: user.id, email: user.email } });
+
+  } catch (error) {
+    console.error("Login error:", error);
+    
+    res.status(500).json({ error: "Database or server error during login" });
+  }
 });
+
 
 // LOGOUT
 app.get("/logout", (req, res) => {
